@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dynmaps>
+	<!-- Tracks count to autojuke. Leave as is if you don't know what you do -->
+	<buffer>5</buffer>
+	
+	<!-- Reload challenge-infocache on startup -->
+	<!-- You can manually reload it ingame -->
+	<!-- Collecting all information can take more than a minute! -->
+	<!-- If false, the last saved cache will be taken -->
+	<startup_cache_reload>false</startup_cache_reload>
+</dynmaps>
