@@ -4,7 +4,7 @@ The idea is to only have 5 tracks in the tracklist of the server at the same tim
 
 As explained above, this plugin adds and removes the maps from the tracklist to keep it small. It chooses the tracks from special folder in your */GameData/Tracks/* folder. Jukeboxing is also possible and you can see all the tracks on the server (but *not* in the tracklist ;)).
 
-This could be a bit hard to understand, so I created a sketch to visualize it ;) [http://abload.de/thumb/dynmaps7qpc5.png](http://abload.de/thumb/dynmaps7qpc5.png)
+This could be a bit hard to understand, so I created a sketch to visualize it ;) [https://abload.de/image.php?img=dynmaps7qpc5.png](https://abload.de/image.php?img=dynmaps7qpc5.png)
 
 
 ## Installation
@@ -23,7 +23,10 @@ That's very important! Adding it after them, you may get errors about undefined 
 
 ## Managing tracks
 
-This is easily done. Go to your **server** folder and open *GameData/Tracks/Challenges/*. Create a folder called *dynmaps*. You can put all your tracks here. No limits, no performance loss (ok, it takes more time on caching challenge information. But that's only when manually do this, or on startup (set <startup_cache_reload> to true in your dynmaps.xml)).
+This is easily done. Go to your **server** folder and open *GameData/Tracks/Challenges/*. Create a folder called *dynmaps*. Put all your tracks there. No limits, no performance loss (ok, it takes more time on caching challenge information. But that's only when manually do this, or on startup (set <startup_cache_reload> to true in your dynmaps.xml)).
+
+When adding and removing tracks, run */dyn_cacherefresh* ingame for changes to take effect.
+
 Important: You should only have 1 track in your real matchsettings, normally saved at */MatchSettings/tracklist.txt*. This plugin doesn't change anything there, it's just to get the server started. It would complain if there was no track at all.
 
 
