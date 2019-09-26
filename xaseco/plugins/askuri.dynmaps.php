@@ -62,6 +62,7 @@ class dyn {
 	
 	public $maps;
 	public $mapdir;
+	public $cache_file = '/dyn_infocache.json';
 	
 	public $lastmaps = array();
 	public $currmap_path;
@@ -81,7 +82,7 @@ class dyn {
 	
 	public function onNewChallenge($aseco, $challenge_item) {
 		$aseco->client->query('GetCurrentChallengeInfo');
-		$this->currmap_path = $aseco->client->getResponse()['FileName']; // Array dereferencing - since PHP 5.4.0
+		$this->currmap_path = $aseco->client->getResponse()['FileName'];
 	}
 	
 	public function onEndRace($aseco, $data) {
@@ -103,7 +104,7 @@ class dyn {
 		$mapscount = count($this->aseco->client->getResponse());
 		
 		if ($mapscount >= $this->settings->buffer[0]) {
-			$this->aseco->console('[DynMaps] Buffering not needed, enaugh maps in list');
+			$this->aseco->console('[DynMaps] Buffering not needed, enough maps in list');
 			return false;
 		} else {
 			$map = $this->maps[$this->currmap_glob_id];
@@ -122,7 +123,13 @@ class dyn {
 	public function loadCacheFromFile() {
 		global $challengeListCache; // from rasp.funcs.php
 		
-		$file = file_get_contents($this->mapdir.'/dyn_infocache.json');
+		$cachefile = $this->mapdir.$this->cache_file;
+		
+		if (!file_exists($cachefile)) {
+			// no cache yet so we need to create one first
+			$this->cacheRefresh($this->aseco, null);
+		} 
+		$file = file_get_contents($cachefile);
 		
 		if ($file) {
 			$challengeListCache = json_decode($file, true);
@@ -143,7 +150,7 @@ class dyn {
 		$aseco->client->query('ChatSendServerMessage', '$ff0>> $0f0Cache successfully reloaded with '.count($challengeListCache).' challenges!');
 	}
 	
-	
+	// used by rasp.funcs.php. Emulates a "GetChallengeList" request to dedicated server
 	public function emulateGetChallengeList($maps, $size, $i) {
 		$slice = array_slice($maps, $i, $size);
 		

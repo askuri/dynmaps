@@ -43,6 +43,7 @@ function clearChallengesCache2($aseco, $event) {
 }  // clearChallengesCache2
 
 // called @ onNewChallenge2
+// Modified for Dynmaps
 function initChallengesCache($aseco, $challenge = null) {
 	global $challengeListCache, $reset_cache_start, $dyn;
 	
@@ -61,6 +62,7 @@ function initChallengesCache($aseco, $challenge = null) {
 	
 }  // initChallengesCache
 
+// Modified for Dynmaps
 function getChallengesCache($aseco, $reload = false) {
 	global $challengeListCache, $dyn;
 
@@ -73,50 +75,34 @@ function getChallengesCache($aseco, $reload = false) {
 		$done = false;
 		$size = 100;
 		$i = 0;
-		while (!$done) {
-			// $aseco->client->query('GetChallengeList', $size, $i); Don't get it from server, emulate it
-			if ($reload) {
-				// Get challenges list from folder and fetch infos
-				// might take up to a minute (tested with 10k maps, ~1.5 minutes)
-				$tracks = $dyn->emulateGetChallengeList($dyn->maps, $size, $i);
-			} else {
-				// don't reload, return the cache
-				return $challengeListCache;
-			}
+		
+		// $aseco->client->query('GetChallengeList', $size, $i); Don't get it from server, emulate it instead
+		if ($reload) {
+			// Get challenges list from folder and fetch infos
+			// might take up to a minute (tested with 10k maps, ~1.5 minutes)
+			$tracks = $dyn->emulateGetChallengeList($dyn->maps, $size, $i);
+		} else {
+			// don't reload, return the cache
+			return $challengeListCache;
+		}
+		
+		if (!empty($tracks)) {
 			
-			// $tracks = $aseco->client->getResponse();
-			if (!empty($tracks)) {
-				if ($aseco->client->isError()) {
-					// warning if no tracks found
-					if (empty($newlist))
-						trigger_error('[' . $aseco->client->getErrorCode() . '] GetChallengeList - ' . $aseco->client->getErrorMessage() . ' - No tracks found!', E_USER_WARNING);
-					$done = true;
-					break;
+			foreach ($tracks as $trow) {
+				// obtain various author fields too
+				$trackinfo = getChallengeData($aseco->server->trackdir . $trow['FileName'], false);
+				if ($trackinfo['name'] != 'file not found') {
+					if ($aseco->server->getGame() != 'TMF')
+						$trow['Author']    = $trackinfo['author'];
+					$trow['AuthorTime']  = $trackinfo['authortime'];
+					$trow['AuthorScore'] = $trackinfo['authorscore'];
 				}
-				foreach ($tracks as $trow) {
-					// obtain various author fields too
-					$trackinfo = getChallengeData($aseco->server->trackdir . $trow['FileName'], false);
-					if ($trackinfo['name'] != 'file not found') {
-						if ($aseco->server->getGame() != 'TMF')
-							$trow['Author']    = $trackinfo['author'];
-						$trow['AuthorTime']  = $trackinfo['authortime'];
-						$trow['AuthorScore'] = $trackinfo['authorscore'];
-					}
-					$trow['Name'] = stripNewlines($trow['Name']);
-					$newlist[$trow['UId']] = $trow;
-				}
-				if (count($tracks) < $size) {
-					// got less than $size tracks, might as well leave
-					$done = true;
-				} else {
-					$i += $size;
-				}
-			} else {
-				$done = true;
+				$trow['Name'] = stripNewlines($trow['Name']);
+				$newlist[$trow['UId']] = $trow;
 			}
-			
-			// make sure the script does not timeout
-			@set_time_limit($aseco->settings['script_timeout']);
+		}
+		else {
+			trigger_error('[DynMaps] getChallengesCache (rasp.funcs) failed. No maps found! Make sure you have put your maps in the right folder! - ', E_USER_ERROR);
 		}
 
 		$challengeListCache = $newlist;
