@@ -9,7 +9,7 @@
  * ----------------------------------------------------------------------------------
  * Author:			askuri
  * E-Mail:			enwi2@t-online.de
- * Contributors:	-
+ * Contributors:	dasschaf/timmy
  * Version:			0.1.0
  * Date:			2013-09-18
  * Copyright:		2013 by askuri
@@ -76,6 +76,10 @@ class dyn {
 		// Get available maps for buffering
 		$this->maps = glob($this->mapdir.'Challenges/dynmaps/*.Challenge.Gbx');
 		// $this->currmap_glob_id = 1;
+		
+		// shuffling the newly read tracklist in order to not have the same tracks played all over when restarting the server & aseco
+		// also avoids alphabetic ordering of the played tracks
+		shuffle($this->maps);
 		
 		$this->bufferMaps();
 	}
@@ -153,7 +157,11 @@ class dyn {
 	// used by rasp.funcs.php. Emulates a "GetChallengeList" request to dedicated server
 	public function emulateGetChallengeList($maps) {
 		
-		$list = glob($this->mapdir.'Challenges/dynmaps/*.Challenge.Gbx');	
+		$list = glob($this->mapdir.'Challenges/dynmaps/*.Challenge.Gbx');
+		
+		// shuffle the list for having a well mixed tracklist, not an alphabetically ordered tracklist
+		shuffle($list);
+		
 		$i = 0;
 		$errors = array();
 		$gbx = new GBXChallMapFetcher();
