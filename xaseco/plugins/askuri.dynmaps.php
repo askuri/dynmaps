@@ -9,7 +9,7 @@
  * ----------------------------------------------------------------------------------
  * Author:			askuri
  * E-Mail:			enwi2@t-online.de
- * Contributors:	dasschaf/timmy
+ * Contributors:	-
  * Version:			0.1.0
  * Date:			2013-09-18
  * Copyright:		2013 by askuri
@@ -77,8 +77,7 @@ class dyn {
 		$this->maps = glob($this->mapdir.'Challenges/dynmaps/*.Challenge.Gbx');
 		// $this->currmap_glob_id = 1;
 		
-		// shuffling the newly read tracklist in order to not have the same tracks played all over when restarting the server & aseco
-		// also avoids alphabetic ordering of the played tracks
+		// shuffling the tracklist to avoid alphabetic ordering of tracks and playing same tracks upon server restart
 		shuffle($this->maps);
 		
 		$this->bufferMaps();
