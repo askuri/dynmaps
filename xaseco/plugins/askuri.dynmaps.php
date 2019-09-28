@@ -151,14 +151,13 @@ class dyn {
 	}
 	
 	// used by rasp.funcs.php. Emulates a "GetChallengeList" request to dedicated server
-	public function emulateGetChallengeList($maps, $size, $i) {
-		$slice = array_slice($maps, $i, $size);
+	public function emulateGetChallengeList($maps) {
 		
-		$list = array();
+		$list = glob($this->mapdir.'Challenges/dynmaps/*.Challenge.Gbx');	
 		$i = 0;
 		$errors = array();
 		$gbx = new GBXChallMapFetcher();
-		foreach ($slice as $path) {
+		foreach ($list as $path) {
 			$pos = strpos(str_replace('\\', '/', $path), '/GameData/Tracks/'); // replace \ to / and find position of tracks folder
 			$filename = substr($path, $pos+17); //cut 17 chars (length of path above) after finding
 			
