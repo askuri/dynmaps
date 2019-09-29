@@ -78,7 +78,7 @@ function getChallengesCache($aseco, $reload = false) {
 		if ($reload) {
 			// Get challenges list from folder and fetch infos
 			// might take up to a minute (tested with 10k maps, ~1.5 minutes)
-			$tracks = $dyn->emulateGetChallengeList($dyn->maps);
+			$tracks = $dyn->emulateGetChallengeList();
 		} else {
 			// don't reload, return the cache
 			return $challengeListCache;
