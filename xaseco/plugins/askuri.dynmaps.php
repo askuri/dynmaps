@@ -74,8 +74,11 @@ class dyn {
 		$this->aseco->client->query('GetTracksDirectory');
 		$this->mapdir = $aseco->server->trackdir;
 		// Get available maps for buffering
-		$this->maps = glob($this->mapdir.'Challenges/dynmaps/*.Challenge.Gbx');
+		$this->maps = glob($this->mapdir.'Challenges/dynmaps/*.[Cc]hallenge.[Gg]bx');
 		// $this->currmap_glob_id = 1;
+		
+		// shuffling the tracklist to avoid alphabetic ordering of tracks and playing same tracks upon server restart
+		shuffle($this->maps);
 		
 		$this->bufferMaps();
 	}
@@ -151,14 +154,16 @@ class dyn {
 	}
 	
 	// used by rasp.funcs.php. Emulates a "GetChallengeList" request to dedicated server
-	public function emulateGetChallengeList($maps, $size, $i) {
-		$slice = array_slice($maps, $i, $size);
+	public function emulateGetChallengeList() {
 		
-		$list = array();
+		$tracks = glob($this->mapdir.'Challenges/dynmaps/*.[Cc]hallenge.[Gg]bx');
+		
+		$list = [];
+		
 		$i = 0;
 		$errors = array();
 		$gbx = new GBXChallMapFetcher();
-		foreach ($slice as $path) {
+		foreach ($tracks as $path) {
 			$pos = strpos(str_replace('\\', '/', $path), '/GameData/Tracks/'); // replace \ to / and find position of tracks folder
 			$filename = substr($path, $pos+17); //cut 17 chars (length of path above) after finding
 			
@@ -186,6 +191,9 @@ class dyn {
 		
 		echo '.';
 		
+		// shuffle the list for having a well mixed tracklist, not an alphabetically ordered tracklist
+		shuffle($list);		
+
 		return $list;
 	}
 }

@@ -73,14 +73,12 @@ function getChallengesCache($aseco, $reload = false) {
 		$aseco->client->resetError();
 		$newlist = array();
 		$done = false;
-		$size = 100;
-		$i = 0;
 		
 		// $aseco->client->query('GetChallengeList', $size, $i); Don't get it from server, emulate it instead
 		if ($reload) {
 			// Get challenges list from folder and fetch infos
 			// might take up to a minute (tested with 10k maps, ~1.5 minutes)
-			$tracks = $dyn->emulateGetChallengeList($dyn->maps, $size, $i);
+			$tracks = $dyn->emulateGetChallengeList();
 		} else {
 			// don't reload, return the cache
 			return $challengeListCache;

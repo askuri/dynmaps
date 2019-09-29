@@ -27,7 +27,7 @@ This is easily done. Go to your **server** folder and open *GameData/Tracks/Chal
 
 When adding and removing tracks, run */dyn_cacherefresh* ingame for changes to take effect.
 
-Important: You should only have 1 track in your real matchsettings, normally saved at */MatchSettings/tracklist.txt*. This plugin doesn't change anything there, it's just to get the server started. It would complain if there was no track at all.
+Important: You should only have 1 track in your real matchsettings, normally saved at */MatchSettings/tracklist.txt*. This plugin doesn't change anything there, it's just to get the server started. It would complain if there was no track at all. The track added this tracklist should be in the *dynmaps* folder mentioned above.
 
 
 ## Chatcommands
