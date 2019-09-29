@@ -78,7 +78,11 @@ class dyn {
 		// $this->currmap_glob_id = 1;
 		
 		// shuffling the tracklist to avoid alphabetic ordering of tracks and playing same tracks upon server restart
-		shuffle($this->maps);
+		// shuffling based on settings!
+		if ($this->settings->shuffle_cache[0] == 'true')
+		{
+			shuffle($this->maps);
+		}
 		
 		$this->bufferMaps();
 	}
@@ -191,8 +195,12 @@ class dyn {
 		
 		echo '.';
 		
-		// shuffle the list for having a well mixed tracklist, not an alphabetically ordered tracklist
-		shuffle($list);		
+		// shuffling the tracklist to avoid alphabetic ordering of tracks and playing same tracks upon server restart
+		// shuffling based on settings!
+		if ($this->settings->shuffle_cache[0] == 'true')
+		{
+			shuffle($list);
+		}	
 
 		return $list;
 	}
