@@ -164,6 +164,7 @@ $rounds_finishpanel = true;
 
 function chat_admin($aseco, $command) {
 	global $jukebox;  // from plugin.rasp_jukebox.php
+	global $dyn; // from askuri.dynmaps.php
 
 	$admin = $command['author'];
 	$login = $admin->login;
@@ -2667,6 +2668,40 @@ function chat_admin($aseco, $command) {
 			if (array_key_exists($tid, $admin->tracklist)) {
 				$name = stripColors($admin->tracklist[$tid]['name']);
 				$filename = $aseco->server->trackdir . $admin->tracklist[$tid]['filename'];
+
+				if ($command['params'][0] == 'remove')
+				{
+					// TODO: implement moving the file to ... / Challenges / removed
+					
+					if (rename($filename, $aseco->server->trackdir . substr($aseco->server->trackdir, -1, 1) . 'Challenges/removed/' . $admin->tracklist[$tid]['filename']))
+					{
+						
+							$message = formatText('{#server}>> {#admin}{1}$z$s {#highlite}{2}$z$s {#admin}removed track: {#highlite}{3}', $chattitle, $admin->nickname, $name);
+					}
+					else 
+					{
+						// didn't work.
+						$message = '{#server}> {#error}Moving file {#highlite}$i ' . $filename . '{#error} failed';
+						$aseco->client->query('ChatSendServerMessageToLogin', $aseco->formatColors($message), $login);
+						$message = formatText('{#server}>> {#admin}{1}$z$s {#highlite}{2}$z$s {#admin}remove track failed: {#highlite}{3}', $chattitle, $admin->nickname, $name);
+					}
+
+				}
+
+				if ($command['params'][0] == 'erase' && is_file($filename)) {
+					if (unlink($filename)) {
+						$message = formatText('{#server}>> {#admin}{1}$z$s {#highlite}{2}$z$s {#admin}erases track: {#highlite}{3}',
+											  $chattitle, $admin->nickname, $name);
+					} else {
+						$message = '{#server}> {#error}Delete file {#highlite}$i ' . $filename . '{#error} failed';
+						$aseco->client->query('ChatSendServerMessageToLogin', $aseco->formatColors($message), $login);
+						$message = formatText('{#server}>> {#admin}{1}$z$s {#highlite}{2}$z$s {#admin}erase track failed: {#highlite}{3}',
+											  $chattitle, $admin->nickname, $name);
+					}
+				}
+
+				// don't need this part anymore -- track is going to be moved into another directory as removal from tracklist does not work with dynmaps				
+				/*
 				$rtn = $aseco->client->query('RemoveChallenge', $filename);
 				if (!$rtn) {
 					trigger_error('[' . $aseco->client->getErrorCode() . '] RemoveChallenge - ' . $aseco->client->getErrorMessage(), E_USER_WARNING);
@@ -2686,7 +2721,8 @@ function chat_admin($aseco, $command) {
 							$message = formatText('{#server}>> {#admin}{1}$z$s {#highlite}{2}$z$s {#admin}erase track failed: {#highlite}{3}',
 							                      $chattitle, $admin->nickname, $name);
 						}
-					}
+					}*/
+
 					// show chat message
 					$aseco->client->query('ChatSendServerMessage', $aseco->formatColors($message));
 					// log console message
