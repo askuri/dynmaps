@@ -142,7 +142,7 @@ class dyn {
 			$challengeListCache = json_decode($file, true);
 		} else {
 			trigger_error('Failed to read challenge-infocache. Check permissions. Reloading it now ...', E_USER_WARNING);
-			getChallengesCache($aseco, true); // from rasp.funcs.php
+			getChallengesCache($this->aseco, true); // from rasp.funcs.php
 		}
 	}
 	
