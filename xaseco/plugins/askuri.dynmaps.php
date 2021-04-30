@@ -160,6 +160,8 @@ class dyn {
 	// used by rasp.funcs.php. Emulates a "GetChallengeList" request to dedicated server
 	public function emulateGetChallengeList() {
 		
+		// glob ignores files with a dot-prefix (hidden filles on unix like systems) by default.
+		// That's why we run glob once more explicitly looking for hidden files.
 		$tracks = array_merge(
 			glob($this->mapdir.'Challenges/dynmaps/*.[Cc]hallenge.[Gg]bx'),
 			glob($this->mapdir.'Challenges/dynmaps/.*.[Cc]hallenge.[Gg]bx')
