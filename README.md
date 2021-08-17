@@ -6,6 +6,10 @@ As explained above, this plugin adds and removes the maps from the tracklist to 
 
 This could be a bit hard to understand, so I created a sketch to visualize it ;) [https://abload.de/image.php?img=dynmaps7qpc5.png](https://abload.de/image.php?img=dynmaps7qpc5.png)
 
+## Prerequisites
+
+* Only tested with XAseco 1.16. Older versions may work
+* Tested with PHP 7. Definitely does not work with PHP 5.3. Might work with PHP 5.4. If you see syntax errors such has in [issue 9](https://github.com/askuri/dynmaps/issues/9), you probably need to upgrade PHP
 
 ## Installation
 
