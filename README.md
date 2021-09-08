@@ -9,7 +9,7 @@ This could be a bit hard to understand, so I created a sketch to visualize it ;)
 ## Prerequisites
 
 * Only tested with XAseco 1.16. Older versions may work
-* Tested with PHP 7. Definitely does not work with PHP 5.3. Might work with PHP 5.4. If you see syntax errors such has in [issue 9](https://github.com/askuri/dynmaps/issues/9), you probably need to upgrade PHP
+* Tested with PHP 7. Definitely does not work with PHP 5.3. Might work with PHP 5.4. Reported to be working with 5.6. If you see syntax errors such has in [issue 9](https://github.com/askuri/dynmaps/issues/9), you probably need to upgrade PHP
 
 ## Installation
 
