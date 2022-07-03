@@ -1,3 +1,4 @@
+**This project is not under active development**. That means I am not adding features and not fixing issues. However, I will review and potentially merge Pull Requests.
 
 When uploading more than a thousand racks to your server, you'll see more and more how it goes slower and slower. Now more players are joining, the CPU goes to 100% at scoretable and synchronisation. This mod tries to tackle that performance issue.
 The idea is to only have 5 tracks in the tracklist of the server at the same time, while all other tracks are dynamically added and removed by this mod
